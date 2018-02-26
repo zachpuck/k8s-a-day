@@ -43,6 +43,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     # ingress.kubernetes.io/ssl-redirect: "true"
+    ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - host: "k8s.dokuforest.com"
