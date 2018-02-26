@@ -1,0 +1,4 @@
+### opctl
+args*.yml
+
+*.private
