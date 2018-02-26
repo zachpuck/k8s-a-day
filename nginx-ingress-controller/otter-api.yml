@@ -1,0 +1,55 @@
+apiVersion: extensions/v1beta1 
+kind: Deployment 
+metadata:
+  name: otterapi 
+  namespace: default 
+  labels:
+    app: otterapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: otterapi
+  template:
+    metadata:
+      labels:
+        app: otterapi 
+    spec:
+      containers:
+        - name: otterapi
+          image: zachpuck/otter-api:latest
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otterapi 
+  namespace: default 
+  labels:
+    app: otterapi 
+spec:
+  type: NodePort
+  selector:
+    app: otterapi 
+  ports:
+  - port: 8282
+    targetPort: 8282 
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: otterapi
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    # ingress.kubernetes.io/ssl-redirect: "true"
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: "k8s.dokuforest.com"
+    http:
+      paths:
+      - path: /otterapi
+        backend:
+          serviceName: otterapi
+          servicePort: 8282

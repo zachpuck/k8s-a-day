@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tls-dhparam
+type: Opaque
+data:
+  dhparam.pem: $BASE64_ENCODED_DHPARAM_PEM

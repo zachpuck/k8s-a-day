@@ -3,6 +3,10 @@ kind: Deployment
 metadata:
   name: nginx-deployment
 spec:
+  volumes:
+  - name: nginx-conf
+    configMap:
+      name: nginx-conf
   selector:
     matchLabels:
       app: nginx
@@ -17,6 +21,9 @@ spec:
         image: nginx:1.7.9
         ports:
         - containerPort: 80
+      volumeMounts:
+      - mountPath: /etc/nginx/conf.d
+        name: nginx-conf
 ---
 apiVersion: v1
 kind: Service
@@ -28,5 +35,6 @@ spec:
   selector:
     app: nginx
   ports:
-  - protocol: TCP
-    port: 80
+  - port: 80
+    nodePort: 30080
+  type: NodePort
